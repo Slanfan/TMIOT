@@ -1,3 +1,19 @@
+// ── Countdown timer ──
+function updateCountdown() {
+  var target = new Date('2027-05-07T10:00:00+02:00').getTime()
+  var diff = Math.max(0, target - Date.now())
+  var days  = Math.floor(diff / 86400000)
+  var hours = Math.floor((diff % 86400000) / 3600000)
+  var mins  = Math.floor((diff % 3600000) / 60000)
+  var secs  = Math.floor((diff % 60000) / 1000)
+  document.getElementById('cd-days').textContent  = String(days).padStart(3, '0')
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0')
+  document.getElementById('cd-mins').textContent  = String(mins).padStart(2, '0')
+  document.getElementById('cd-secs').textContent  = String(secs).padStart(2, '0')
+}
+updateCountdown()
+setInterval(updateCountdown, 1000)
+
   // ── Visitor counter ──
   var key = 'tmiot_v2_cnt'
   var n = parseInt(localStorage.getItem(key) || '41337', 10) + 1
