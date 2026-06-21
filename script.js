@@ -14,11 +14,14 @@ function updateCountdown() {
 updateCountdown()
 setInterval(updateCountdown, 1000)
 
-  // ── Visitor counter ──
-  var key = 'tmiot_v2_cnt'
-  var n = parseInt(localStorage.getItem(key) || '41337', 10) + 1
-  localStorage.setItem(key, n)
-  document.getElementById('counter').textContent = String(n).padStart(6, '0')
+// ── Visitor counter ──
+fetch('https://api.counterapi.dev/v2/slanfans-team-4542/tmiot-site-visits/up')
+  .then(function(r) { return r.json() })
+  .then(function(d) {
+    var count = (d.data && d.data.up_count) || 0
+    document.getElementById('counter').textContent = String(count).padStart(6, '0')
+  })
+  .catch(function() {})
 
   // ── Floating stars ──
   var sf = document.getElementById('starfield')

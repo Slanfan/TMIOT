@@ -414,7 +414,7 @@ body {
 }
 .countdown-lbl {
   font-family: var(--pixel);
-  font-size: 7px;
+  font-size: 12px;
   color: var(--teal);
   letter-spacing: 0.1em;
   opacity: 0.75;
@@ -439,7 +439,7 @@ body {
 }
 .cd-unit-lbl {
   font-family: var(--pixel);
-  font-size: 5px;
+  font-size: 10px;
   color: var(--text-muted);
   letter-spacing: 0.12em;
   margin-top: 3px;
@@ -537,7 +537,7 @@ body {
 .site-nav a {
   display: block;
   font-family: var(--pixel);
-  font-size: 12px;
+  font-size: 10px;
   color: var(--teal);
   text-decoration: none;
   padding: 11px 18px;
@@ -865,18 +865,6 @@ body {
   background: rgba(3, 12, 24, 0.88);
   position: relative;
 }
-.cta-wrap::before {
-  content: "[ ! ]";
-  font-family: var(--pixel);
-  font-size: 8px;
-  color: var(--teal);
-  position: absolute;
-  top: -11px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #030c18;
-  padding: 0 10px;
-}
 .cta-gif-row {
   display: flex;
   justify-content: center;
@@ -1051,6 +1039,66 @@ body {
 }
 
 /* ════════════════════════════════
+   RAFFLE SECTION
+════════════════════════════════ */
+#raffle {
+  background: linear-gradient(135deg, rgba(4, 20, 18, 0.92), rgba(4, 14, 22, 0.88));
+  border: 1px solid var(--teal-dark);
+  border-radius: 2px;
+  padding: 28px 32px;
+  margin: 0 0 8px;
+  box-shadow: 0 0 30px rgba(62, 207, 189, 0.1), inset 0 0 40px rgba(0,0,0,0.3);
+}
+.raffle-body {
+  max-width: 690px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--text-main);
+}
+.raffle-body p {
+  margin-bottom: 14px;
+  line-height: 1.75;
+}
+.raffle-body strong {
+  color: var(--gold-light);
+}
+.raffle-lead {
+  font-family: var(--vt);
+  font-size: 26px;
+  color: var(--teal);
+  margin-bottom: 18px !important;
+  text-shadow: 0 0 12px var(--teal-glow);
+}
+.raffle-donate {
+  margin-top: 24px;
+  border-top: 1px solid rgba(62, 207, 189, 0.25);
+  padding-top: 20px;
+}
+.raffle-donate-lbl {
+  font-family: var(--pixel);
+  font-size: 12px;
+  color: var(--teal);
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+.raffle-contact {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--pixel);
+  font-size: 9px;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border: 1px solid var(--teal-dark);
+  padding: 8px 16px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.raffle-contact:hover {
+  color: var(--teal-dark);
+  border-color: var(--teal);
+}
+
+/* ════════════════════════════════
    VISIBILITY UTILITIES
 ════════════════════════════════ */
 @media (max-width: 767px) {
@@ -1062,6 +1110,11 @@ body {
 
   .info-grid {
     grid-template-columns: 1fr;
+  }
+
+  .badge {
+    flex: unset;
+    width: 100%;
   }
 
   .info-cell,
