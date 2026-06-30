@@ -284,6 +284,10 @@ body {
 /* ════════════════════════════════
        GIF PLACEHOLDER WIDGET
     ════════════════════════════════ */
+.join-us-bar .gif-slot {
+  width: 150px;
+  height: 150px;
+}
 .gif-slot {
   width: 100%;
   background: rgba(2, 8, 16, 0.92);
@@ -760,7 +764,7 @@ body {
   background: #040b16;
   border: 2px solid;
   border-color: var(--bevel-l) var(--bevel-d) var(--bevel-d) var(--bevel-l);
-  padding: 10px 8px;
+  padding: 18px;
   text-align: center;
   display: flex;
   flex-direction: row;
@@ -909,11 +913,6 @@ body {
 /* ════════════════════════════════
        CTA
     ════════════════════════════════ */
-.cta-wrap {
-  border: 2px solid var(--teal-dark);
-  background: rgba(3, 12, 24, 0.88);
-  position: relative;
-}
 .cta-gif-row {
   display: flex;
   justify-content: center;
@@ -921,23 +920,23 @@ body {
   padding: 18px 20px 0;
 }
 .cta-body {
-  padding: 18px 24px 28px;
+  padding: 18px 24px;
   text-align: center;
 }
 .cta-title {
   font-family: var(--pixel);
   font-size: clamp(9px, 2vw, 14px);
   color: #fff;
-  margin-bottom: 10px;
   line-height: 1.6;
 }
 .cta-sub {
+  margin-top: 10px;
   font-family: var(--vt);
   font-size: 22px;
   color: var(--text-muted);
-  margin-bottom: 22px;
 }
 .btn-row {
+  margin-top: 22px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -1160,6 +1159,11 @@ body {
    VISIBILITY UTILITIES
 ════════════════════════════════ */
 @media (max-width: 767px) {
+  .join-us-bar .gif-slot {
+    width: 120px;
+    height: 120px;
+  }
+
   .d-sm-none {
     display: none !important;
   }
@@ -1319,4 +1323,16 @@ body {
   letter-spacing: normal;
   color: black;
   text-align: center;
+}
+
+.join-us-bar {
+  background: rgba(2, 6, 12, 0.96);
+  border-top: 1px solid var(--teal-dark);
+  border-bottom: 2px solid var(--teal-dark);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
