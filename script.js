@@ -1,3 +1,15 @@
+// ── Seamless marquee ──
+;(function () {
+  var track = document.querySelector('.marquee-track')
+  var original = track && track.querySelector('.marquee-inner')
+  if (!original) return
+  var clone = original.cloneNode(true)
+  clone.setAttribute('aria-hidden', 'true')
+  track.appendChild(clone)
+  var totalW = original.offsetWidth * 2
+  track.style.width = totalW + 'px'
+})()
+
 // ── Countdown timer ──
 function updateCountdown() {
   var target = new Date('2027-05-07T10:00:00+02:00').getTime()
