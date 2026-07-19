@@ -1,3 +1,57 @@
+// ── Global tooltip ──
+;(function () {
+  var tip = document.getElementById('g-tooltip')
+  var active = null
+
+  function position(trigger) {
+    var r = trigger.getBoundingClientRect()
+    var pad = 8
+    var tipW = tip.offsetWidth
+    var tipH = tip.offsetHeight
+    var left = r.left + r.width / 2 - tipW / 2
+    var top  = r.top - tipH - 10
+    if (top < pad) top = r.bottom + 10
+    left = Math.max(pad, Math.min(left, window.innerWidth - tipW - pad))
+    tip.style.left = left + 'px'
+    tip.style.top  = top  + 'px'
+  }
+
+  var hideTimer = null
+
+  function show(trigger) {
+    clearTimeout(hideTimer)
+    tip.innerHTML = trigger.getAttribute('data-tooltip')
+    var hasLinks = trigger.hasAttribute('data-tooltip-allow-links')
+    tip.classList.toggle('has-links', hasLinks)
+    tip.style.display = 'block'
+    position(trigger)
+    active = trigger
+  }
+
+  function hide() {
+    tip.style.display = 'none'
+    active = null
+  }
+
+  function scheduleHide() {
+    hideTimer = setTimeout(hide, 120)
+  }
+
+  document.querySelectorAll('.tooltip-trigger').forEach(function (el) {
+    el.addEventListener('mouseenter', function () { show(el) })
+    el.addEventListener('mouseleave', scheduleHide)
+    el.addEventListener('click', function (e) {
+      e.stopPropagation()
+      active === el ? hide() : show(el)
+    })
+  })
+
+  tip.addEventListener('mouseenter', function () { clearTimeout(hideTimer) })
+  tip.addEventListener('mouseleave', scheduleHide)
+  document.addEventListener('click', function () { hide() })
+  window.addEventListener('scroll', function () { if (active) position(active) }, { passive: true })
+})()
+
 // ── Seamless marquee ──
 ;(function () {
   var track = document.querySelector('.marquee-track')

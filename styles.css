@@ -724,6 +724,34 @@ body {
 }
 
 /* ════════════════════════════════
+       TOOLTIP
+    ════════════════════════════════ */
+.tooltip-trigger {
+  color: var(--teal);
+  border-bottom: 1px dashed var(--teal-dark);
+  cursor: pointer;
+  white-space: nowrap;
+}
+#g-tooltip {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  width: 300px;
+  background: #040e1a;
+  border: 1px solid var(--teal-dark);
+  color: var(--text-main);
+  font-family: "Crimson Pro", Georgia, serif;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 12px 14px;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.75);
+  pointer-events: none;
+}
+#g-tooltip.has-links {
+  pointer-events: auto;
+}
+
+/* ════════════════════════════════
        AWARDS
     ════════════════════════════════ */
 .awards-layout {

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You got there.</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      color: #3ecfbd;
+      font-family: "VT323", monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .file-stamp {
+      font-family: "Press Start 2P", monospace;
+      font-size: 9px;
+      color: #1a9e8e;
+      letter-spacing: 0.1em;
+      margin-bottom: 40px;
+      opacity: 0.6;
+    }
+    .title {
+      font-size: clamp(36px, 8vw, 72px);
+      color: #f0c040;
+      text-shadow: 0 0 20px rgba(240,192,64,0.6);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .subtitle {
+      font-size: clamp(22px, 4vw, 36px);
+      color: #3ecfbd;
+      margin-bottom: 50px;
+      opacity: 0.8;
+    }
+    .body-text {
+      font-size: clamp(20px, 3vw, 28px);
+      color: #c8dff0;
+      max-width: 620px;
+      line-height: 1.6;
+      margin-bottom: 50px;
+    }
+    .body-text em {
+      color: #f0c040;
+      font-style: normal;
+    }
+    .classified {
+      font-family: "Press Start 2P", monospace;
+      font-size: 8px;
+      color: #ff5522;
+      letter-spacing: 0.15em;
+      border: 1px solid #ff5522;
+      padding: 10px 18px;
+      margin-bottom: 50px;
+      opacity: 0.7;
+    }
+    .back {
+      font-family: "Press Start 2P", monospace;
+      font-size: 9px;
+      color: #1a9e8e;
+      text-decoration: none;
+      border: 1px solid #1a9e8e;
+      padding: 10px 20px;
+      letter-spacing: 0.1em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .back:hover { color: #3ecfbd; border-color: #3ecfbd; }
+    .blink { animation: blink 1.2s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  </style>
+</head>
+<body>
+
+  <div class="file-stamp">F.B.I. — CASE FILE X-52701-α — DECLASSIFIED</div>
+
+  <div class="title">YOU GOT THERE.</div>
+  <div class="subtitle">The moose knew you would.</div>
+
+  <div class="classified">⚠ LEVEL 5 CLEARANCE CONFIRMED ⚠</div>
+
+  <p class="body-text">
+    Most people scroll past the source code.<br>
+    You didn't.<br><br>
+    Agent Mulder was right — <em>the truth is out there</em>.<br>
+    Sometimes it's just one URL away.<br><br>
+    Consider yourself part of the <em>X-Files Magic Club</em>.<br>
+    Tell no one. <span class="blink">▌</span>
+  </p>
+
+  <a class="back" href="index.html">← RETURN TO BASE</a>
+
+</body>
+</html>
