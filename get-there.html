@@ -7,94 +7,493 @@
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       background: #000;
       color: #3ecfbd;
       font-family: "VT323", monospace;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      padding: 48px 20px 60px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* CRT scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.06) 2px,
+        rgba(0,0,0,0.06) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* FBI header */
+    .fbi-header {
       text-align: center;
-      padding: 40px 20px;
+      border: 2px solid #cc3311;
+      padding: 14px 20px;
+      margin-bottom: 44px;
+      position: relative;
     }
-    .file-stamp {
+    .fbi-header::before,
+    .fbi-header::after {
+      content: '';
+      position: absolute;
+      top: 4px; left: 4px; right: 4px; bottom: 4px;
+      border: 1px solid rgba(204,51,17,0.3);
+      pointer-events: none;
+    }
+    .fbi-stamp {
       font-family: "Press Start 2P", monospace;
-      font-size: 9px;
-      color: #1a9e8e;
-      letter-spacing: 0.1em;
-      margin-bottom: 40px;
-      opacity: 0.6;
+      font-size: 8px;
+      color: #cc3311;
+      letter-spacing: 0.12em;
+      line-height: 2;
     }
+    .fbi-stamp .case {
+      color: #883300;
+      font-size: 6px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Clearance badge */
+    .clearance {
+      display: inline-block;
+      font-family: "Press Start 2P", monospace;
+      font-size: 7px;
+      color: #000;
+      background: #3ecfbd;
+      padding: 5px 10px;
+      letter-spacing: 0.1em;
+      margin-top: 8px;
+    }
+
+    /* Title */
     .title {
-      font-size: clamp(36px, 8vw, 72px);
+      font-size: clamp(52px, 12vw, 90px);
       color: #f0c040;
-      text-shadow: 0 0 20px rgba(240,192,64,0.6);
-      margin-bottom: 10px;
-      line-height: 1.2;
+      text-shadow: 0 0 30px rgba(240,192,64,0.55), 0 0 70px rgba(240,192,64,0.18);
+      text-align: center;
+      line-height: 1;
+      margin-bottom: 8px;
     }
     .subtitle {
-      font-size: clamp(22px, 4vw, 36px);
+      font-size: clamp(22px, 4vw, 34px);
       color: #3ecfbd;
-      margin-bottom: 50px;
-      opacity: 0.8;
+      text-align: center;
+      margin-bottom: 54px;
+      opacity: 0.72;
     }
-    .body-text {
-      font-size: clamp(20px, 3vw, 28px);
+
+    /* Dossier sections */
+    .section {
+      border-left: 2px solid #0d3028;
+      padding: 14px 20px 14px 18px;
+      margin-bottom: 30px;
+    }
+    .section-label {
+      font-family: "Press Start 2P", monospace;
+      font-size: 6px;
+      color: #cc3311;
+      letter-spacing: 0.18em;
+      margin-bottom: 12px;
+      opacity: 0.75;
+    }
+    .section-body {
+      font-size: clamp(20px, 3.2vw, 27px);
       color: #c8dff0;
-      max-width: 620px;
-      line-height: 1.6;
-      margin-bottom: 50px;
+      line-height: 1.65;
     }
-    .body-text em {
+    .section-body em {
       color: #f0c040;
       font-style: normal;
     }
-    .classified {
+
+    /* Redacted */
+    .redacted {
+      display: inline;
+      background: #3ecfbd;
+      color: #3ecfbd;
+      border-radius: 2px;
+      padding: 0 3px;
+      cursor: pointer;
+      transition: background 0.35s, color 0.35s, text-shadow 0.35s;
+      user-select: none;
+    }
+    .redacted:hover,
+    .redacted.revealed {
+      background: transparent;
+      color: #f0c040;
+      text-shadow: 0 0 12px rgba(240,192,64,0.55);
+    }
+    .redact-hint {
+      font-family: "Press Start 2P", monospace;
+      font-size: 5px;
+      color: #0d5040;
+      vertical-align: middle;
+      margin-left: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Coordinates block */
+    .coords {
       font-family: "Press Start 2P", monospace;
       font-size: 8px;
-      color: #ff5522;
-      letter-spacing: 0.15em;
-      border: 1px solid #ff5522;
-      padding: 10px 18px;
-      margin-bottom: 50px;
-      opacity: 0.7;
+      color: #3ecfbd;
+      letter-spacing: 0.08em;
+      line-height: 2.2;
+      opacity: 0.65;
     }
+    .coords small {
+      font-size: 5px;
+      opacity: 0.5;
+      display: block;
+      margin-top: 6px;
+      letter-spacing: 0.15em;
+    }
+
+    /* Divider */
+    hr {
+      border: none;
+      border-top: 1px solid #0a2820;
+      margin: 36px 0;
+    }
+
+    /* Keyboard hint */
+    #kbd-hint {
+      font-family: "Press Start 2P", monospace;
+      font-size: 7px;
+      color: #0d3028;
+      text-align: center;
+      letter-spacing: 0.12em;
+      margin-bottom: 20px;
+      transition: color 0.3s;
+    }
+    #kbd-hint.lit { color: #1a9e8e; }
+
+    /* Secret panel */
+    #secret-panel {
+      display: none;
+      border: 1px solid #f0c040;
+      background: rgba(240,192,64,0.03);
+      padding: 28px 24px;
+      margin: 0 0 30px;
+      text-align: center;
+      animation: fadeSlide 0.5s ease;
+    }
+    .sp-badge {
+      font-family: "Press Start 2P", monospace;
+      font-size: 8px;
+      color: #f0c040;
+      letter-spacing: 0.12em;
+      margin-bottom: 22px;
+    }
+    .sp-body {
+      font-size: clamp(20px, 3vw, 26px);
+      color: #c8dff0;
+      line-height: 1.7;
+    }
+    .sp-body strong {
+      color: #f0c040;
+      font-style: normal;
+      font-weight: normal;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Save evidence button */
+    .save-btn {
+      display: inline-block;
+      font-family: "Press Start 2P", monospace;
+      font-size: 8px;
+      color: #f0c040;
+      background: transparent;
+      border: 1px solid #f0c040;
+      padding: 12px 18px;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .save-btn:hover { color: #000; background: #f0c040; }
+
+    /* Back link */
     .back {
+      display: block;
       font-family: "Press Start 2P", monospace;
       font-size: 9px;
       color: #1a9e8e;
       text-decoration: none;
       border: 1px solid #1a9e8e;
-      padding: 10px 20px;
+      padding: 13px 20px;
       letter-spacing: 0.1em;
+      text-align: center;
+      margin-top: 40px;
       transition: color 0.2s, border-color 0.2s;
     }
     .back:hover { color: #3ecfbd; border-color: #3ecfbd; }
+
+    /* Blink */
     .blink { animation: blink 1.2s step-end infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* Mobile touch note */
+    .touch-note {
+      font-family: "Press Start 2P", monospace;
+      font-size: 5px;
+      color: #0d3028;
+      text-align: center;
+      margin-top: -18px;
+      margin-bottom: 24px;
+      letter-spacing: 0.08em;
+    }
+    @media (hover: none) {
+      .touch-note { color: #0d5040; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="file-stamp">F.B.I. — CASE FILE X-52701-α — DECLASSIFIED</div>
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  F.B.I. CLASSIFIED — EYES ONLY                                  ║
+  ║  Case File X-52701-α / Addendum — The Moose Dossier            ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║                                                                  ║
+  ║  MULDER: "Scully. Someone found the file."                       ║
+  ║  SCULLY: "The page? That's statistically improbable, Mulder."   ║
+  ║  MULDER: "And yet. Here we are."                                 ║
+  ║  SCULLY: "You're doing that thing where you smile at screens."   ║
+  ║  MULDER: "Only when I'm right."                                  ║
+  ║                                                                  ║
+  ║  There are layers within this file.                              ║
+  ║  You found the first one.                                        ║
+  ║  Keep looking.                                                   ║
+  ║  The number holds the next door open.                            ║
+  ║                                                                  ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+  <div class="fbi-header">
+    <div class="fbi-stamp">
+      FEDERAL BUREAU OF INVESTIGATION
+      <span class="case">CASE FILE X-52701-α — ADDENDUM — NOT FOR GENERAL CIRCULATION</span>
+      <span class="clearance">LEVEL 5 CLEARANCE CONFIRMED</span>
+    </div>
+  </div>
 
   <div class="title">YOU GOT THERE.</div>
-  <div class="subtitle">The moose knew you would.</div>
+  <div class="subtitle">The moose knew you would. <span class="blink">▌</span></div>
 
-  <div class="classified">⚠ LEVEL 5 CLEARANCE CONFIRMED ⚠</div>
+  <div class="section">
+    <div class="section-label">AGENT ASSESSMENT</div>
+    <div class="section-body">
+      Most people read a web page.<br>
+      You read the <em>source code</em>.<br><br>
+      That is not curiosity.<br>
+      That is <em>instinct</em>.<br>
+      That is exactly the kind of person<br>
+      the moose was looking for.
+    </div>
+  </div>
 
-  <p class="body-text">
-    Most people scroll past the source code.<br>
-    You didn't.<br><br>
-    Agent Mulder was right — <em>the truth is out there</em>.<br>
-    Sometimes it's just one URL away.<br><br>
-    Consider yourself part of the <em>X-Files Magic Club</em>.<br>
-    Tell no one. <span class="blink">▌</span>
-  </p>
+  <div class="section">
+    <div class="section-label">MISSION BRIEFING</div>
+    <div class="section-body">
+      The event is real. The moose is real.<br>
+      <em>Stockholm. May 7–8, 2027.</em><br><br>
+      You have been granted a clearance word.<br>
+      Guard it.<br><br>
+      &nbsp;&nbsp;<span class="redacted">DEEP MOOSE</span><span class="redact-hint">[hover / tap to reveal]</span><br><br>
+      Its purpose remains above your clearance.<br>
+      For now.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">TEMPORAL INTELLIGENCE</div>
+    <div class="section-body">
+      The number <em>1013</em> is not a coincidence.<br>
+      It never is.<br><br>
+      Watch for it.<br>
+      Be in the room.<br>
+      Be paying attention.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">TARGET COORDINATES — CONFIRMED</div>
+    <div class="coords">
+      59° 19′ 05″ N<br>
+      18° 02′ 02″ E
+      <small>LUSTHUSET — LÅNGHOLMEN — STOCKHOLM, SWEDEN</small>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="kbd-hint">[ THIS TERMINAL ACCEPTS INPUT ]</div>
+  <div class="touch-note">desktop: type the number — mobile: you already found enough</div>
+
+  <div id="secret-anchor"></div>
 
   <a class="back" href="index.html">← RETURN TO BASE</a>
 
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  ADDENDUM — FOR THOSE WHO KEEP READING                          ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║                                                                  ║
+  ║  MULDER: "They typed it in."                                     ║
+  ║  SCULLY: "The number?"                                           ║
+  ║  MULDER: "1-0-1-3. On a web page."                              ║
+  ║  SCULLY: "That's... actually impressive."                        ║
+  ║  MULDER: "I knew you'd come around eventually."                  ║
+  ║  SCULLY: "Don't push it, Mulder."                               ║
+  ║                                                                  ║
+  ║  Chris Carter. 1013 Productions.                                 ║
+  ║  The date is not random.                                         ║
+  ║  October 13. The number behind the X.                           ║
+  ║  Now you carry it too.                                           ║
+  ║                                                                  ║
+  ║  The Deep Moose thanks you for your service.                     ║
+  ║  See you in Stockholm.                                           ║
+  ║                                                                  ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+  <div id="g-tooltip" style="display:none;position:fixed;z-index:9999;background:#0a1a18;color:#c8dff0;border:1px solid #1a5040;padding:12px 14px;font-size:18px;font-family:'VT323',monospace;max-width:260px;line-height:1.5;pointer-events:none;"></div>
+
+  <script>
+    document.querySelectorAll('.redacted').forEach(function(el) {
+      el.addEventListener('click', function() { el.classList.toggle('revealed'); });
+    });
+
+    var _k = 'PGRpdiBjbGFzcz0ic3AtYmFkZ2UiPiYjOTg4OTsgVFJBTlNNSVNTSU9OIFJFQ0VJVkVEICZtZGFzaDsgREVFUCBNT09TRSBDSEFOTkVMICYjOTg4OTs8L2Rpdj48ZGl2IGNsYXNzPSJzcC1ib2R5Ij5Zb3Uga25vdyB0aGUgZnJlcXVlbmN5LCBBZ2VudC48YnI+PGJyPjxzdHJvbmc+REVFUCBNT09TRTwvc3Ryb25nPiBpcyB5b3VyIGNsZWFyYW5jZSBjb2RlLjxicj5OYW1lIGl0IGJlZm9yZSB0aGUgZXZlbnQgYmVnaW5zLiBPbmNlLiBRdWlldGx5Ljxicj5UbyB0aGUgcmlnaHQgcGVyc29uLjxicj48YnI+QXQgMTA6MTMgb24gRGF5IE9uZSw8YnI+dGhvc2Ugd2hvIG5hbWVkIGl0IHdpbGwgYmUgY2FsbGVkIG91dC48YnI+PGJyPk5vdCBldmVyeW9uZSB3aG8gYXNrcyByZWNlaXZlcy4gWW91IHdpbGwuPGJyPlRob3NlIHlvdSB0ZWxsICZtZGFzaDsgd2lsbCBub3QuPC9kaXY+';
+    var _b = '';
+    var hint   = document.getElementById('kbd-hint');
+    var anchor = document.getElementById('secret-anchor');
+    var _u = false;
+
+    document.addEventListener('keydown', function(e) {
+      if (_u) return;
+      if (/^[0-9]$/.test(e.key)) {
+        _b += e.key;
+        if (_b.length > 10) _b = _b.slice(-10);
+
+        hint.classList.add('lit');
+        clearTimeout(hint._fadeTimer);
+        hint._fadeTimer = setTimeout(function() {
+          hint.classList.remove('lit');
+          _b = '';
+        }, 2400);
+
+        if (_b.length >= 4 && parseInt(_b.slice(-4)) === 0x3F5) {
+          _u = true;
+          var panel = document.createElement('div');
+          panel.id = 'secret-panel';
+          panel.style.cssText = 'display:block;border:1px solid #f0c040;background:rgba(240,192,64,0.03);padding:28px 24px;margin:0 0 30px;text-align:center;animation:fadeSlide 0.5s ease';
+          panel.innerHTML = atob(_k);
+
+          var btn = document.createElement('button');
+          btn.className = 'save-btn';
+          btn.textContent = '[ SAVE EVIDENCE ]';
+          btn.addEventListener('click', function() {
+            document.fonts.ready.then(function() {
+              var sc = 2, W = 800, H = 540;
+              var cv = document.createElement('canvas');
+              cv.width  = W * sc;
+              cv.height = H * sc;
+              var cx = cv.getContext('2d');
+              cx.scale(sc, sc);
+
+              cx.fillStyle = '#000';
+              cx.fillRect(0, 0, W, H);
+
+              cx.strokeStyle = '#f0c040';
+              cx.lineWidth = 1;
+              cx.strokeRect(22, 22, W - 44, H - 44);
+              cx.strokeStyle = 'rgba(240,192,64,0.18)';
+              cx.lineWidth = 0.5;
+              cx.strokeRect(28, 28, W - 56, H - 56);
+
+              cx.textAlign = 'center';
+
+              cx.fillStyle = '#cc3311';
+              cx.font = '10px "Press Start 2P"';
+              cx.fillText('FEDERAL BUREAU OF INVESTIGATION', W / 2, 74);
+              cx.fillStyle = '#883300';
+              cx.font = '7px "Press Start 2P"';
+              cx.fillText('CASE FILE X-52701-α  —  EVIDENCE COPY', W / 2, 96);
+              cx.fillText('CLEARANCE: LEVEL 5', W / 2, 114);
+
+              cx.strokeStyle = 'rgba(240,192,64,0.12)';
+              cx.lineWidth = 0.5;
+              cx.beginPath(); cx.moveTo(60, 130); cx.lineTo(W - 60, 130); cx.stroke();
+
+              cx.shadowColor = 'rgba(240,192,64,0.5)';
+              cx.shadowBlur = 26;
+              cx.fillStyle = '#f0c040';
+              cx.font = '100px "VT323"';
+              cx.fillText('DEEP MOOSE', W / 2, 252);
+              cx.shadowBlur = 0;
+
+              cx.fillStyle = '#3ecfbd';
+              cx.font = '11px "Press Start 2P"';
+              cx.fillText('CLEARANCE CONFIRMED', W / 2, 288);
+
+              cx.strokeStyle = 'rgba(240,192,64,0.12)';
+              cx.lineWidth = 0.5;
+              cx.beginPath(); cx.moveTo(60, 308); cx.lineTo(W - 60, 308); cx.stroke();
+
+              var ts = new Date().toUTCString();
+              cx.fillStyle = '#1a9e8e';
+              cx.font = '21px "VT323"';
+              cx.fillText('Accessed: ' + ts, W / 2, 352);
+              cx.fillText('Event: TMIOT 2027  —  Stockholm', W / 2, 378);
+              cx.fillText('May 7–8, 2027  —  Lusthuset, Långholmen', W / 2, 404);
+
+              cx.strokeStyle = 'rgba(240,192,64,0.12)';
+              cx.lineWidth = 0.5;
+              cx.beginPath(); cx.moveTo(60, 422); cx.lineTo(W - 60, 422); cx.stroke();
+
+              cx.fillStyle = '#1a5040';
+              cx.font = '6px "Press Start 2P"';
+              cx.fillText('THIS DOCUMENT IS YOUR EVIDENCE  —  PRESENT AT THE EVENT', W / 2, 488);
+
+              cv.toBlob(function(blob) {
+                var url = URL.createObjectURL(blob);
+                var a   = document.createElement('a');
+                a.href     = url;
+                a.download = 'evidence-X52701.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+              }, 'image/png');
+            });
+          });
+          panel.appendChild(btn);
+
+          anchor.parentNode.insertBefore(panel, anchor);
+          hint.textContent = '[ CLEARANCE CODE ACCEPTED — CHANNEL OPEN ]';
+          hint.classList.add('lit');
+          setTimeout(function() {
+            panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 80);
+        }
+      }
+    });
+  </script>
 </body>
 </html>
