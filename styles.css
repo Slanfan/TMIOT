@@ -732,6 +732,11 @@ body {
   cursor: pointer;
   white-space: nowrap;
 }
+.tooltip-trigger.stealth {
+  color: inherit;
+  border-bottom: none;
+  cursor: text;
+}
 #g-tooltip {
   display: none;
   position: fixed;
@@ -1167,6 +1172,66 @@ body {
   gap: 12px;
   margin-bottom: 12px;
   flex-wrap: wrap;
+}
+.agents-row {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 14px;
+}
+.agent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.agent-sprite {
+  width: 51px;
+  height: 132px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 4px rgba(62, 207, 189, 0.25));
+  transition: filter 0.2s, transform 0.2s;
+}
+.agent:hover .agent-sprite,
+.agent:focus .agent-sprite {
+  filter: drop-shadow(0 0 8px rgba(62, 207, 189, 0.55));
+  transform: translateY(-2px);
+}
+.agent-tag {
+  font-family: var(--pixel);
+  font-size: 8px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+#g-tooltip.agent-bubble {
+  border-color: var(--gold);
+  border-radius: 8px;
+  font-family: var(--vt);
+  font-size: 16px;
+}
+#g-tooltip.agent-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-top-color: var(--gold);
+  border-bottom: 0;
+}
+.hidden-clue {
+  color: #020810;
+  background: transparent;
+  font-family: var(--vt);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  margin-top: 6px;
+  cursor: default;
+}
+.hidden-clue::selection {
+  color: #000;
+  background: var(--gold-light);
 }
 .footer-links {
   display: flex;

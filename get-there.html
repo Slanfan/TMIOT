@@ -447,6 +447,29 @@
     });
 
     var _k = 'PGRpdiBjbGFzcz0ic3AtYmFkZ2UiPiYjOTg4OTsgVFJBTlNNSVNTSU9OIFJFQ0VJVkVEICZtZGFzaDsgREVFUCBNT09TRSBDSEFOTkVMICYjOTg4OTs8L2Rpdj48ZGl2IGNsYXNzPSJzcC1ib2R5Ij5Zb3Uga25vdyB0aGUgZnJlcXVlbmN5LCBBZ2VudC48YnI+PGJyPjxzdHJvbmc+REVFUCBNT09TRTwvc3Ryb25nPiBpcyB5b3VyIGNsZWFyYW5jZSBjb2RlLjxicj5OYW1lIGl0IGJlZm9yZSB0aGUgZXZlbnQgYmVnaW5zLiBPbmNlLiBRdWlldGx5Ljxicj5UbyB0aGUgcmlnaHQgcGVyc29uLjxicj48YnI+QXQgMTA6MTMgb24gRGF5IE9uZSw8YnI+dGhvc2Ugd2hvIG5hbWVkIGl0IHdpbGwgYmUgY2FsbGVkIG91dC48YnI+PGJyPk5vdCBldmVyeW9uZSB3aG8gYXNrcyByZWNlaXZlcy4gWW91IHdpbGwuPGJyPlRob3NlIHlvdSB0ZWxsICZtZGFzaDsgd2lsbCBub3QuPC9kaXY+';
+
+    // Paste a Discord (or other JSON-webhook) URL here to get notified when
+    // someone hits SAVE EVIDENCE. Leave blank to disable — no request is
+    // made if this is empty. No IP/device fingerprinting is sent, only a
+    // timestamp and non-identifying browser info (see notifyWebhook below).
+    var WEBHOOK_URL = '';
+
+    function notifyWebhook() {
+      if (!WEBHOOK_URL) return;
+      var payload = {
+        content: '🦌 **DEEP MOOSE CLEARANCE CONFIRMED**\n' +
+          'Time: ' + new Date().toISOString() + '\n' +
+          'Language: ' + navigator.language + '\n' +
+          'Screen: ' + screen.width + 'x' + screen.height + '\n' +
+          'Referrer: ' + (document.referrer || '(direct)')
+      };
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(function () {});
+    }
+
     var _b = '';
     var hint   = document.getElementById('kbd-hint');
     var anchor = document.getElementById('secret-anchor');
@@ -476,6 +499,7 @@
           btn.className = 'save-btn';
           btn.textContent = '[ SAVE EVIDENCE ]';
           btn.addEventListener('click', function() {
+            notifyWebhook();
             document.fonts.ready.then(function() {
               var sc = 2, W = 800, H = 540;
               var cv = document.createElement('canvas');

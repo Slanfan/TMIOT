@@ -20,9 +20,16 @@
 
   function show(trigger) {
     clearTimeout(hideTimer)
-    tip.innerHTML = trigger.getAttribute('data-tooltip')
+    var pool = trigger.getAttribute('data-tooltip-pool')
+    if (pool) {
+      var options = pool.split('||')
+      tip.innerHTML = options[Math.floor(Math.random() * options.length)]
+    } else {
+      tip.innerHTML = trigger.getAttribute('data-tooltip')
+    }
     var hasLinks = trigger.hasAttribute('data-tooltip-allow-links')
     tip.classList.toggle('has-links', hasLinks)
+    tip.classList.toggle('agent-bubble', trigger.classList.contains('agent-trigger'))
     tip.style.display = 'block'
     position(trigger)
     active = trigger
