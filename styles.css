@@ -675,6 +675,8 @@ body {
 .format-body {
   padding: 20px 22px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .format-num {
   font-family: var(--pixel);
@@ -717,6 +719,7 @@ body {
   font-size: 17px;
   color: var(--text-muted);
   line-height: 1.6;
+  flex-grow: 1;
 }
 .format-desc strong {
   color: var(--highlight);
@@ -1293,6 +1296,59 @@ body {
   opacity: 0.4;
   padding: 8px;
   letter-spacing: 0.08em;
+}
+
+/* ════════════════════════════════
+   ROSTER
+════════════════════════════════ */
+.roster-status {
+  font-family: var(--vt);
+  font-size: 18px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 0;
+}
+.roster-wrap {
+  overflow-x: auto;
+}
+.roster-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--vt);
+  font-size: 17px;
+}
+.roster-table thead th {
+  font-family: var(--pixel);
+  font-size: 10px;
+  color: var(--teal);
+  text-align: left;
+  letter-spacing: 0.08em;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--teal-dark);
+  white-space: nowrap;
+}
+.roster-table thead th:not(:first-child),
+.roster-table tbody td:not(:first-child) {
+  text-align: center;
+}
+.roster-table tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--dark-border);
+  white-space: nowrap;
+}
+.roster-table tbody tr:hover {
+  background: rgba(62, 207, 189, 0.06);
+}
+.roster-name {
+  color: var(--text-main);
+}
+.roster-yes {
+  color: var(--teal);
+  text-shadow: 0 0 6px var(--teal-glow);
+}
+.roster-no {
+  color: var(--text-muted);
+  opacity: 0.4;
 }
 
 /* ════════════════════════════════

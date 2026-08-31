@@ -448,24 +448,44 @@
 
     var _k = 'PGRpdiBjbGFzcz0ic3AtYmFkZ2UiPiYjOTg4OTsgVFJBTlNNSVNTSU9OIFJFQ0VJVkVEICZtZGFzaDsgREVFUCBNT09TRSBDSEFOTkVMICYjOTg4OTs8L2Rpdj48ZGl2IGNsYXNzPSJzcC1ib2R5Ij5Zb3Uga25vdyB0aGUgZnJlcXVlbmN5LCBBZ2VudC48YnI+PGJyPjxzdHJvbmc+REVFUCBNT09TRTwvc3Ryb25nPiBpcyB5b3VyIGNsZWFyYW5jZSBjb2RlLjxicj5OYW1lIGl0IGJlZm9yZSB0aGUgZXZlbnQgYmVnaW5zLiBPbmNlLiBRdWlldGx5Ljxicj5UbyB0aGUgcmlnaHQgcGVyc29uLjxicj48YnI+QXQgMTA6MTMgb24gRGF5IE9uZSw8YnI+dGhvc2Ugd2hvIG5hbWVkIGl0IHdpbGwgYmUgY2FsbGVkIG91dC48YnI+PGJyPk5vdCBldmVyeW9uZSB3aG8gYXNrcyByZWNlaXZlcy4gWW91IHdpbGwuPGJyPlRob3NlIHlvdSB0ZWxsICZtZGFzaDsgd2lsbCBub3QuPC9kaXY+';
 
-    // Paste a Discord (or other JSON-webhook) URL here to get notified when
-    // someone hits SAVE EVIDENCE. Leave blank to disable — no request is
-    // made if this is empty. No IP/device fingerprinting is sent, only a
-    // timestamp and non-identifying browser info (see notifyWebhook below).
+    // Slack Incoming Webhook — fires when someone hits SAVE EVIDENCE.
+    // Leave blank to disable — no request is made if this is empty.
+    // No IP/device fingerprinting is sent, only a timestamp and
+    // non-identifying browser info (see notifyWebhook below).
     var WEBHOOK_URL = '';
+
+    // Short human-readable code, generated once per solve (not per click) so
+    // re-clicking SAVE EVIDENCE doesn't mint fresh valid codes for the same
+    // person. Alphabet skips easily-confused characters (0/O, 1/I/L).
+    function generateCode() {
+      var alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
+      var s = ''
+      for (var i = 0; i < 8; i++) {
+        s += alphabet[Math.floor(Math.random() * alphabet.length)]
+        if (i === 3) s += '-'
+      }
+      return s
+    }
+    var evidenceCode = ''
 
     function notifyWebhook() {
       if (!WEBHOOK_URL) return;
       var payload = {
-        content: '🦌 **DEEP MOOSE CLEARANCE CONFIRMED**\n' +
+        text: '🦌 *DEEP MOOSE CLEARANCE CONFIRMED*\n' +
+          'Code: ' + evidenceCode + '\n' +
           'Time: ' + new Date().toISOString() + '\n' +
           'Language: ' + navigator.language + '\n' +
           'Screen: ' + screen.width + 'x' + screen.height + '\n' +
           'Referrer: ' + (document.referrer || '(direct)')
       };
+      // Slack's webhook endpoint sends no CORS headers, so a JSON
+      // content-type here would fail preflight from a browser. Using
+      // text/plain + no-cors keeps this a "simple request" (no preflight);
+      // Slack still parses the body as JSON regardless of the header.
       fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
       }).catch(function () {});
     }
@@ -490,6 +510,7 @@
 
         if (_b.length >= 4 && parseInt(_b.slice(-4)) === 0x3F5) {
           _u = true;
+          evidenceCode = generateCode();
           var panel = document.createElement('div');
           panel.id = 'secret-panel';
           panel.style.cssText = 'display:block;border:1px solid #f0c040;background:rgba(240,192,64,0.03);padding:28px 24px;margin:0 0 30px;text-align:center;animation:fadeSlide 0.5s ease';
@@ -560,7 +581,11 @@
 
               cx.fillStyle = '#1a5040';
               cx.font = '6px "Press Start 2P"';
-              cx.fillText('THIS DOCUMENT IS YOUR EVIDENCE  —  PRESENT AT THE EVENT', W / 2, 488);
+              cx.fillText('THIS DOCUMENT IS YOUR EVIDENCE  —  PRESENT AT THE EVENT', W / 2, 478);
+
+              cx.fillStyle = '#f0c040';
+              cx.font = '13px "Press Start 2P"';
+              cx.fillText('CODE: ' + evidenceCode, W / 2, 502);
 
               cv.toBlob(function(blob) {
                 var url = URL.createObjectURL(blob);
