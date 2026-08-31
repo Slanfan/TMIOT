@@ -1,0 +1,10 @@
+name = "tmiot-webhook-proxy"
+main = "src/index.js"
+compatibility_date = "2026-08-31"
+
+[vars]
+ALLOWED_ORIGIN = "https://tmiot.slanfan.com"
+
+# Set the real secret with:
+#   npx wrangler secret put SLACK_WEBHOOK_URL
+# Never put the webhook URL itself in this file or in [vars].
