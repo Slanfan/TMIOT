@@ -352,7 +352,7 @@ var COUNTRY_CODES = {
 
 // ── Player roster ──
 ;(function () {
-  var ROSTER_API_BASE = 'https://tolaria.app/api/v1/roster?tournamentId='
+  var ROSTER_API_BASE = 'https://api-api-3dw6xp624a-uc.a.run.app/api/v1/roster?tournamentId='
   var TOURNAMENTS = [
     { id: '65171083-3698-4e30-890c-b0d61195220a', label: 'Main Event' },
     { id: '93d8e9b2-25be-4eaf-95eb-15637d7ecbe0', label: '2HG' },
