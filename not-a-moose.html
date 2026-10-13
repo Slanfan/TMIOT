@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I Am Not A Moose</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; color: #3ecfbd; font-family: "VT323", monospace; min-height: 100vh; padding: 40px 16px 60px; max-width: 680px; margin: 0 auto; }
+    body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px); pointer-events: none; z-index: 100; }
+    .hd { text-align: center; border: 2px solid #cc3311; padding: 14px 20px; margin-bottom: 32px; font-family: "Press Start 2P", monospace; font-size: 8px; color: #cc3311; letter-spacing: .12em; line-height: 2; }
+    .hd span { display: block; color: #883300; font-size: 6px; margin-top: 4px; }
+    .t { font-size: clamp(44px, 10vw, 78px); color: #f0c040; text-shadow: 0 0 30px rgba(240,192,64,.5); text-align: center; line-height: 1; margin-bottom: 8px; }
+    .s { font-size: clamp(20px, 4vw, 28px); text-align: center; margin-bottom: 28px; opacity: .72; }
+    .stats { display: flex; justify-content: center; gap: 28px; font-family: "Press Start 2P", monospace; font-size: 9px; color: #1a9e8e; margin-bottom: 16px; letter-spacing: .08em; }
+    .stats b { color: #f0c040; font-weight: normal; }
+
+    #board { position: relative; width: min(100%, 400px); aspect-ratio: 1000 / 1545; margin: 0 auto; border: 2px solid #1a9e8e; background: #050f0d; box-shadow: 0 0 30px rgba(62,207,189,.18); touch-action: manipulation; user-select: none; }
+    .tile { position: absolute; width: 25%; height: 16.6667%; background-image: url("not-a-moose.jpg"); background-size: 400% 600%; border: 1px solid #000; cursor: pointer; transition: left .14s ease, top .14s ease, opacity .6s; }
+    .tile.empty { opacity: 0; pointer-events: none; }
+    #board.solved .tile.empty { opacity: 1; }
+    #board.solved .tile { border-color: transparent; cursor: default; }
+    #board.peek .tile { transition: none; }
+    #peek-img { position: absolute; inset: 0; background: url("not-a-moose.jpg") center / cover; display: none; }
+    #board.peek #peek-img { display: block; }
+
+    .btns { display: flex; justify-content: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+    button { font-family: "Press Start 2P", monospace; font-size: 8px; color: #3ecfbd; background: transparent; border: 1px solid #1a9e8e; padding: 12px 16px; letter-spacing: .1em; cursor: pointer; }
+    button:hover { color: #000; background: #3ecfbd; }
+    #msg { font-size: clamp(20px, 3.4vw, 26px); color: #f0c040; text-align: center; min-height: 66px; margin-top: 22px; line-height: 1.5; }
+    a.back { display: block; font-family: "Press Start 2P", monospace; font-size: 9px; color: #1a9e8e; text-decoration: none; border: 1px solid #1a9e8e; padding: 13px 20px; text-align: center; margin-top: 30px; }
+    a.back:hover { color: #3ecfbd; border-color: #3ecfbd; }
+  </style>
+</head>
+<body>
+
+<!--
+  SCULLY: "Mulder. It says 'I am not a moose'."
+  MULDER: "That is exactly what a moose would say."
+  SCULLY: "It is a poster for an independent film."
+  MULDER: "That is exactly what a moose would say about it."
+  SCULLY: "..."
+  MULDER: "Solve it, Scully. The moose is watching."
+
+  [ SOLVING THIS UNLOCKS NOTHING. THE MOOSE WILL KNOW, THOUGH. ]
+-->
+
+  <div class="hd">FEDERAL BUREAU OF INVESTIGATION<span>CASE FILE X-00404-Ξ — EVIDENCE SCRAMBLED</span></div>
+  <div class="t">NOT A MOOSE.</div>
+  <div class="s">Somebody shuffled the evidence. Put it back.</div>
+
+  <div class="stats"><div>MOVES <b id="moves">0</b></div><div>TIME <b id="time">0:00</b></div></div>
+
+  <div id="board" role="application" aria-label="Sliding tile puzzle. Click a tile next to the gap, or use the arrow keys."><div id="peek-img"></div></div>
+
+  <div class="btns">
+    <button id="shuffle">SHUFFLE</button>
+    <button id="peek">HOLD TO PEEK</button>
+  </div>
+  <div id="msg"></div>
+  <a class="back" href="index.html">&larr; RETURN TO BASE</a>
+
+  <script>
+    var COLS = 4, ROWS = 6, N = COLS * ROWS, EMPTY = N - 1
+
+    // Notifies Slack when the puzzle is solved, through the same Cloudflare
+    // Worker proxy as get-there.html. Only a timestamp, move count and
+    // elapsed time are sent. Leave blank to disable.
+    var WEBHOOK_URL = 'https://tmiot-webhook-proxy.slanfan.workers.dev'
+
+    var board = document.getElementById('board')
+    var msg = document.getElementById('msg')
+    var movesEl = document.getElementById('moves')
+    var timeEl = document.getElementById('time')
+    var cells, moves, startedAt, timer, solved
+
+    var tiles = []
+    for (var i = 0; i < N; i++) {
+      var t = document.createElement('div')
+      t.className = 'tile' + (i === EMPTY ? ' empty' : '')
+      t.style.backgroundPosition = (i % COLS) * 100 / (COLS - 1) + '% ' + Math.floor(i / COLS) * 100 / (ROWS - 1) + '%'
+      t.dataset.id = i
+      board.appendChild(t)
+      tiles.push(t)
+    }
+
+    function render() {
+      for (var c = 0; c < N; c++) {
+        var el = tiles[cells[c]]
+        el.style.left = (c % COLS) * 25 + '%'
+        el.style.top = Math.floor(c / COLS) * (100 / ROWS) + '%'
+      }
+    }
+
+    function neighbours(c) {
+      var r = Math.floor(c / COLS), col = c % COLS, out = []
+      if (r > 0) out.push(c - COLS)
+      if (r < ROWS - 1) out.push(c + COLS)
+      if (col > 0) out.push(c - 1)
+      if (col < COLS - 1) out.push(c + 1)
+      return out
+    }
+
+    function isSolved() {
+      for (var c = 0; c < N; c++) if (cells[c] !== c) return false
+      return true
+    }
+
+    function fmt(s) { return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') }
+    function elapsed() { return startedAt ? Math.round((Date.now() - startedAt) / 1000) : 0 }
+
+    function shuffle() {
+      clearInterval(timer)
+      startedAt = 0; moves = 0; solved = false
+      movesEl.textContent = '0'; timeEl.textContent = '0:00'
+      msg.textContent = ''
+      board.classList.remove('solved')
+      cells = []
+      for (var i = 0; i < N; i++) cells.push(i)
+      // Random walk from the solved state, so every shuffle is solvable.
+      var gap = EMPTY, prev = -1
+      for (var k = 0; k < 600 || isSolved(); k++) {
+        var opts = neighbours(gap).filter(function (n) { return n !== prev })
+        var next = opts[Math.floor(Math.random() * opts.length)]
+        cells[gap] = cells[next]; cells[next] = EMPTY
+        prev = gap; gap = next
+      }
+      render()
+    }
+
+    function tryMove(c) {
+      if (solved) return
+      var gap = cells.indexOf(EMPTY)
+      if (neighbours(gap).indexOf(c) === -1) return
+      cells[gap] = cells[c]; cells[c] = EMPTY
+      moves++
+      movesEl.textContent = moves
+      if (!startedAt) {
+        startedAt = Date.now()
+        timer = setInterval(function () { timeEl.textContent = fmt(elapsed()) }, 500)
+      }
+      render()
+      if (isSolved()) win()
+    }
+
+    function win() {
+      solved = true
+      clearInterval(timer)
+      var secs = elapsed()
+      timeEl.textContent = fmt(secs)
+      board.classList.add('solved')
+      msg.innerHTML = 'SOLVED in ' + moves + ' moves, ' + fmt(secs) + '.<br>Reward: none. Glory: quietly noted.'
+      notifyWebhook(secs)
+    }
+
+    function notifyWebhook(secs) {
+      if (!WEBHOOK_URL) return
+      var payload = {
+        text: '🧩 *PUZZLE SOLVED — "I Am Not A Moose"*\n' +
+          'Moves: ' + moves + '\n' +
+          'Time: ' + fmt(secs) + '\n' +
+          'At: ' + new Date().toISOString()
+      }
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(function () {})
+    }
+
+    board.addEventListener('click', function (e) {
+      var t = e.target.closest('.tile')
+      if (t) tryMove(cells.indexOf(Number(t.dataset.id)))
+    })
+
+    // Arrow keys move a tile into the gap from the arrow's opposite side.
+    document.addEventListener('keydown', function (e) {
+      var d = { ArrowUp: COLS, ArrowDown: -COLS, ArrowLeft: 1, ArrowRight: -1 }[e.key]
+      if (!d) return
+      e.preventDefault()
+      var gap = cells.indexOf(EMPTY), c = gap + d
+      if (c >= 0 && c < N && neighbours(gap).indexOf(c) !== -1) tryMove(c)
+    })
+
+    document.getElementById('shuffle').addEventListener('click', shuffle)
+    var peek = document.getElementById('peek')
+    ;['mousedown', 'touchstart'].forEach(function (ev) { peek.addEventListener(ev, function (e) { e.preventDefault(); board.classList.add('peek') }) })
+    ;['mouseup', 'mouseleave', 'touchend', 'touchcancel'].forEach(function (ev) { peek.addEventListener(ev, function () { board.classList.remove('peek') }) })
+
+    shuffle()
+  </script>
+</body>
+</html>

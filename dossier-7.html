@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOSSIER 7 — DO NOT OPEN</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; color: #3ecfbd; font-family: "VT323", monospace; min-height: 100vh; padding: 48px 20px 60px; max-width: 680px; margin: 0 auto; }
+    body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px); pointer-events: none; }
+    .hd { text-align: center; border: 2px solid #cc3311; padding: 14px 20px; margin-bottom: 40px; font-family: "Press Start 2P", monospace; font-size: 8px; color: #cc3311; letter-spacing: .12em; line-height: 2; }
+    .hd span { display: block; color: #883300; font-size: 6px; margin-top: 4px; }
+    .t { font-size: clamp(48px, 11vw, 84px); color: #f0c040; text-shadow: 0 0 30px rgba(240,192,64,.5); text-align: center; line-height: 1; margin-bottom: 8px; }
+    .s { font-size: clamp(20px, 4vw, 30px); text-align: center; margin-bottom: 44px; opacity: .72; }
+    .sec { border-left: 2px solid #0d3028; padding: 12px 20px 12px 18px; margin-bottom: 28px; }
+    .lb { font-family: "Press Start 2P", monospace; font-size: 6px; color: #cc3311; letter-spacing: .18em; margin-bottom: 12px; opacity: .75; }
+    .b { font-size: clamp(20px, 3.2vw, 26px); color: #c8dff0; line-height: 1.65; }
+    .b em { color: #f0c040; font-style: normal; }
+    #msg { font-family: "Press Start 2P", monospace; font-size: 8px; color: #f0c040; text-align: center; min-height: 24px; margin: 24px 0; line-height: 1.8; }
+    a.back { display: block; font-family: "Press Start 2P", monospace; font-size: 9px; color: #1a9e8e; text-decoration: none; border: 1px solid #1a9e8e; padding: 13px 20px; text-align: center; margin-top: 30px; }
+    a.back:hover { color: #3ecfbd; border-color: #3ecfbd; }
+  </style>
+</head>
+<body>
+
+<!--
+  MULDER: "This one is nothing, Scully."
+  SCULLY: "You filed it under nothing?"
+  MULDER: "Under N. For nothing. It is a very large drawer."
+
+  [ This page is a dead end. Probably. ]
+-->
+
+  <div class="hd">FEDERAL BUREAU OF INVESTIGATION<span>CASE FILE X-00007-ζ — MISFILED</span></div>
+  <div class="t">DOSSIER SEVEN.</div>
+  <div class="s">Filed under: Miscellaneous / Moose / Dental</div>
+  <div class="sec"><div class="lb">FINDINGS</div><div class="b">The subject was observed standing near a lake. The lake was not observed. The subject was a Tuesday.<br><br>Conclusion: <em>probably cheese</em>.</div></div>
+  <div class="sec"><div class="lb">WITNESS STATEMENT</div><div class="b">"I saw a light in the sky, and then I saw a second light, and then I went home for soup." — Witness #4, who is also Witness #2.</div></div>
+  <div class="sec"><div class="lb">RECOMMENDATION</div><div class="b">Return this file to the cabinet marked <em>BANANA</em>. Do not read the cabinet. Do not look at the banana.</div></div>
+
+  <div id="msg"></div>
+  <a class="back" href="index.html">&larr; RETURN TO BASE</a>
+
+  <script>
+    var b = ''
+    document.addEventListener('keydown', function (e) {
+      if (!/^[0-9]$/.test(e.key)) return
+      b = (b + e.key).slice(-4)
+      if (b === '1013') {
+        document.getElementById('msg').textContent = 'WRONG DOOR, AGENT. THE RIGHT ONE IS NAMED BY WHAT IT DOES.'
+        b = ''
+      }
+    })
+  </script>
+</body>
+</html>

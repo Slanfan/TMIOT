@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGNAL 88.1 FM</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; color: #3ecfbd; font-family: "VT323", monospace; min-height: 100vh; padding: 48px 20px 60px; max-width: 680px; margin: 0 auto; }
+    body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px); pointer-events: none; }
+    .hd { text-align: center; border: 2px solid #cc3311; padding: 14px 20px; margin-bottom: 40px; font-family: "Press Start 2P", monospace; font-size: 8px; color: #cc3311; letter-spacing: .12em; line-height: 2; }
+    .hd span { display: block; color: #883300; font-size: 6px; margin-top: 4px; }
+    .t { font-size: clamp(48px, 11vw, 84px); color: #f0c040; text-shadow: 0 0 30px rgba(240,192,64,.5); text-align: center; line-height: 1; margin-bottom: 8px; }
+    .s { font-size: clamp(20px, 4vw, 30px); text-align: center; margin-bottom: 44px; opacity: .72; }
+    .sec { border-left: 2px solid #0d3028; padding: 12px 20px 12px 18px; margin-bottom: 28px; }
+    .lb { font-family: "Press Start 2P", monospace; font-size: 6px; color: #cc3311; letter-spacing: .18em; margin-bottom: 12px; opacity: .75; }
+    .b { font-size: clamp(20px, 3.2vw, 26px); color: #c8dff0; line-height: 1.65; }
+    .b em { color: #f0c040; font-style: normal; }
+    #msg { font-family: "Press Start 2P", monospace; font-size: 8px; color: #f0c040; text-align: center; min-height: 24px; margin: 24px 0; line-height: 1.8; }
+    a.back { display: block; font-family: "Press Start 2P", monospace; font-size: 9px; color: #1a9e8e; text-decoration: none; border: 1px solid #1a9e8e; padding: 13px 20px; text-align: center; margin-top: 30px; }
+    a.back:hover { color: #3ecfbd; border-color: #3ecfbd; }
+  </style>
+</head>
+<body>
+
+<!--
+  SCULLY: "Mulder, this is a radio playing a fridge."
+  MULDER: "The fridge is trying to tell us something."
+  SCULLY: "The fridge is trying to keep the milk cold."
+
+  SCULLY: "Mulder, what is the burst at the bottom?"
+  MULDER: "The only honest thing on this frequency."
+
+  [ This page is a dead end. Mostly. ]
+-->
+
+  <div class="hd">FEDERAL BUREAU OF INVESTIGATION<span>CASE FILE X-88100-ω — STATIC</span></div>
+  <div class="t">88.1 MHz.</div>
+  <div class="s">Broadcasting: nothing, continuously, since 1994</div>
+  <div class="sec"><div class="lb">TRANSCRIPT</div><div class="b">kkkkshhhhh ... the moose ... kkkshhh ... <em>the kettle is on</em> ... shhhhhh ... seventeen ... kshh ... turn left at the other left ... shhhhh</div></div>
+  <div class="sec"><div class="lb">ANALYSIS</div><div class="b">Our best analysts agree that this is a sound. Further analysis was postponed due to lunch.</div></div>
+  <div class="sec"><div class="lb">FREQUENCY</div><div class="b">88.1 &middot; 88.2 &middot; 88.1 &middot; 88.3 &middot; (88.1 again, but louder)</div></div>
+
+  <div class="sec"><div class="lb">INTERCEPTED — UNIDENTIFIED CIPHER</div><div class="b">
+    Between the static, one burst came through clean. Grouped in fives, as the old operators did:<br><br>
+    <em style="letter-spacing:.12em">FVSVS AFMGY ESSCM EQODP QRUWX FVSJI WBCUO ABWL</em><br><br>
+    A note was scribbled beside it, in a hand that looked suspiciously like Mulder's:<br>
+    <em>"A Frenchman's cipher, not Caesar's. The key walks on four legs and is out there."</em>
+  </div></div>
+  <div id="msg"></div>
+  <a class="back" href="index.html">&larr; RETURN TO BASE</a>
+
+  <script>
+    var b = ''
+    document.addEventListener('keydown', function (e) {
+      if (!/^[0-9]$/.test(e.key)) return
+      b = (b + e.key).slice(-4)
+      if (b === '1013') {
+        document.getElementById('msg').textContent = 'WRONG DOOR, AGENT. THE RIGHT ONE IS NAMED BY WHAT IT DOES.'
+        b = ''
+      }
+    })
+  </script>
+</body>
+</html>
