@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" data-tx-id="1104">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transmission 1104 — TMIOT 2027</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Oswald:wght@400;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/transmissions/transmissions.js"></script>
+  <script src="/tx-gate.js"></script>
+</head>
+
+<body>
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║ F.B.I. CLASSIFIED — TRANSMISSION 1104 // INCOMING                ║
+  ║ Case File X-52701-α / Addendum V — Evidence Recovered            ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║                                                                  ║
+  ║ SCULLY: "Mulder, why is there a leather mat on my desk?"         ║
+  ║ MULDER: "Evidence."                                              ║
+  ║ SCULLY: "Of what?"                                               ║
+  ║ MULDER: "That the moose has a very good tattoo artist."          ║
+  ║ SCULLY: "It is hand engraved. By a person. With a tool."         ║
+  ║ MULDER: "That is what they want you to think."                   ║
+  ║ SCULLY: "...It is also really, really nice."                     ║
+  ║ MULDER: "Scully. Did you just admit you want it?"                ║
+  ║ SCULLY: "I admit nothing. I will see you at the Main Event."     ║
+  ║                                                                  ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+  <div id="starfield"></div>
+
+  <!-- Shown until the release time (see tx-gate.js) -->
+  <div id="tx-lock">
+    <div class="tx-lock-box">
+      <div class="tx-lock-id">TRANSMISSION 1104</div>
+      <div class="tx-lock-title">SIGNAL NOT YET RECEIVED</div>
+      <p>The Bureau is still decoding. Check back at <strong id="tx-lock-when">the appointed hour</strong>.</p>
+      <div class="tx-lock-count" id="tx-lock-count">--:--:--</div>
+      <a class="raffle-contact" href="/">&larr; RETURN TO BASE</a>
+    </div>
+  </div>
+  <script>
+    ;(function () {
+      var el = document.getElementById('tx-lock-count')
+      function tick() {
+        if (!window.txGate) return
+        var s = Math.max(0, Math.floor((window.txGate.openAt - window.txGate.now()) / 1000))
+        var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60
+        el.textContent = [h, m, sec].map(function (n) { return String(n).padStart(2, '0') }).join(':')
+      }
+      function when() {
+        if (!window.txGate || !window.txGate.openAt) return
+        var w = document.getElementById('tx-lock-when')
+        try {
+          w.textContent = new Date(window.txGate.openAt).toLocaleString('en-GB', { timeZone: 'Europe/Stockholm', dateStyle: 'long', timeStyle: 'short' }) + ' Stockholm time'
+        } catch (e) {}
+      }
+      tick(); when(); setInterval(tick, 1000)
+    })()
+  </script>
+
+
+  <div class="chrome-frame tx-page">
+    <div class="chrome-inner">
+
+      <!-- Marquee -->
+      <div class="marquee-bar">
+        <div class="marquee-track">
+          <span class="marquee-inner">
+            <span class="m-sep">★</span> TRANSMISSION 1104 — INCOMING
+            <span class="m-sep">★</span> DOMINUS TEMPORIS PRIZE REVEALED
+            <span class="m-sep">★</span> HAND-ENGRAVED LEATHER PLAYMAT
+            <span class="m-sep">★</span> MAIN EVENT: FRIDAY, MAY 7
+            <span class="m-sep">✦</span> THE MOOSE IS OUT THERE
+          </span>
+        </div>
+      </div>
+
+      <!-- HEADER -->
+      <header class="hero">
+        <div class="pixel-strip"></div>
+        <div class="hero-inner">
+          <div class="hero-center" style="width:100%">
+            <div class="hero-eyebrow">:: Incoming ::</div>
+            <h1 class="hero-title">📡 TRANSMISSION &nbsp;<span class="yr">1104</span></h1>
+            <div class="neon-line"></div>
+            <div class="hero-tagline">The Moose Is Out There 2027</div>
+          </div>
+        </div>
+        <div class="pixel-strip"></div>
+      </header>
+
+      <!-- NAV -->
+      <nav class="site-nav">
+        <ul>
+          <li><a href="/#transmissions">← All Transmissions</a></li>
+          <li><a href="#prize">The Prize</a></li>
+          <li><a href="#how">How to Win It</a></li>
+          <li><a href="#register">Register</a></li>
+        </ul>
+      </nav>
+
+      <div class="px-divider">
+        <div class="px-divider-inner"></div>
+      </div>
+
+      <main class="content" style="padding-top: 20px;">
+
+        <!-- INTRO -->
+        <section id="briefing">
+          <div class="ann-body">
+            <p class="ann-lead">Agents, the Bureau has recovered a prize. And it is gorgeous.</p>
+            <p>We have been sitting on this one for a while, and frankly it has been hard to keep quiet. The winner of
+              <strong>Dominus Temporis</strong> will not go home with just a title and bragging rights. They go home
+              with this.</p>
+          </div>
+        </section>
+
+        <div class="px-divider" style="margin:28px 0">
+          <div class="px-divider-inner"></div>
+        </div>
+
+        <!-- THE PRIZE -->
+        <section id="prize">
+          <div class="sec-head">
+            <div class="sec-head-txt gold-txt">&gt;&gt; 🏆 The Prize: A Hand-Engraved Playmat</div>
+            <hr class="sec-rule gold-rule">
+          </div>
+          <figure class="tx-figure">
+            <img src="/assets/images/transmissions/dominus-temporis-price.jpeg"
+              alt="A leather playmat hand engraved with the words Dominus Temporis, a Time Elemental, planets, moons and the banner The Moose Is Out There, 2027">
+            <figcaption>Exhibit D-1: The Dominus Temporis playmat. Real leather. Real engraving. Not a render.</figcaption>
+          </figure>
+          <div class="ann-body">
+            <p>Yes, that is a <strong>leather playmat</strong>, and yes, every line of that pattern is
+              <strong>engraved by hand</strong>. Look closely: a <strong>Time Elemental</strong>,
+              Saturn drifting past, a moon wearing its own clock face, and a banner at the bottom that says
+              <em>The Moose Is Out There &mdash; 2027</em>.</p>
+            <p>It is one of a kind. There is only one, it is not for sale, and no, we will not make you a second one if
+              you ask nicely. We checked. The moose was very firm on this.</p>
+            <p class="ann-note">Leather develops character over time, so this playmat will look better with every
+              game played on it. Fitting for a prize about time, really.</p>
+          </div>
+        </section>
+
+        <div class="px-divider" style="margin:28px 0">
+          <div class="px-divider-inner"></div>
+        </div>
+
+        <!-- HOW TO WIN -->
+        <section id="how">
+          <div class="sec-head">
+            <div class="sec-head-txt gold-txt">&gt;&gt; ⏳ How Do I Get My Hands On It?</div>
+            <hr class="sec-rule gold-rule">
+          </div>
+          <div class="ann-body">
+            <p>A quick refresher. Dominus Temporis is awarded at the <strong>Friday Main Event</strong>, and your
+              score is simple:</p>
+            <div class="ann-callout">
+              <div class="ann-callout-lbl">DOMINUS SCORE</div>
+              <p><strong>Game wins + Time Elementals in your main deck.</strong> Four copies means a four-win head
+                start. Highest score at the end of the Main Event takes the mat. Tied? Most copies wins, then best
+                final placement.</p>
+            </div>
+            <p>Which means the steps are, conveniently, three:</p>
+            <ol class="ann-toc">
+              <li><strong>Get a ticket</strong> and register for the Main Event. You cannot win a mat from your
+                couch. We have checked that too.</li>
+              <li><strong>Start brewing.</strong> Time Elemental has to be in your <em>main deck</em>. Sideboarding it
+                in does not count, however good the timing.</li>
+              <li><strong>Show up and win games.</strong> The more you win, the further ahead you are. Annoyingly,
+                this part is on you.</li>
+            </ol>
+            <p>Not planning on playing four Time Elementals? That is fine. Your opponents who are will thank
+              you for the extra room at the top of the table.</p>
+          </div>
+        </section>
+
+        <div class="px-divider" style="margin:28px 0">
+          <div class="px-divider-inner"></div>
+        </div>
+
+        <!-- REGISTER -->
+        <section id="register">
+          <div class="sec-head">
+            <div class="sec-head-txt gold-txt">&gt;&gt; 🎟️ Still Reading? Go Get a Ticket</div>
+            <hr class="sec-rule gold-rule">
+          </div>
+          <div class="ann-body" style="text-align:center">
+            <p>Seats are limited, the mat is not getting any less shiny, and the moose is watching.
+              <strong>Register for the Main Event on Tolaria</strong> and start sleeving up some clocks.</p>
+            <p>
+              <a class="raffle-contact"
+                href="https://tolaria.app/tournament/65171083-3698-4e30-890c-b0d61195220a/details"
+                target="_blank" rel="noopener">REGISTER FOR THE MAIN EVENT</a>
+            </p>
+            <p style="font-size:15px">Want to see every format first? <a href="/#formats">Have a look at the main page</a>.</p>
+          </div>
+        </section>
+
+        <div class="px-divider" style="margin:28px 0">
+          <div class="px-divider-inner"></div>
+        </div>
+
+        <div class="ann-body" style="text-align:center">
+          <p class="ann-quote">End of transmission. The moose has already picked a spot on the wall for it.</p>
+          <a class="raffle-contact" href="/#transmissions">← ALL TRANSMISSIONS</a>
+        </div>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/#transmissions">All Transmissions</a>
+          <a href="#prize">The Prize</a>
+          <a href="#how">How to Win It</a>
+          <a href="#register">Register</a>
+        </div>
+        <div class="footer-copy">TMIOT 2027 &mdash; The Moose Is Out There &mdash; &copy; 2027</div>
+        <div class="footer-hosts">
+          <span class="footer-hosts-lbl">Hosted by</span>
+          <div class="footer-logos">
+            <img src="/assets/images/logos/TMIOT-X-Files.png" alt="X-Files" class="footer-logo">
+            <img src="/assets/images/logos/TMIOT-Moose-Crew.png" alt="Moose Crew" class="footer-logo">
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <script>
+    // Seamless marquee
+    ;(function () {
+      var track = document.querySelector('.marquee-track')
+      var original = track && track.querySelector('.marquee-inner')
+      if (!original) return
+      var clone = original.cloneNode(true)
+      clone.setAttribute('aria-hidden', 'true')
+      track.appendChild(clone)
+      track.style.width = original.offsetWidth * 2 + 'px'
+    })()
+
+    // Floating stars
+    ;(function () {
+      var sf = document.getElementById('starfield')
+      var cols = ['#3ecfbd', '#f0c040', '#ffffff', '#3ecfbd', '#ffffff', '#ffffff']
+      for (var i = 0; i < 55; i++) {
+        var s = document.createElement('div')
+        s.className = 'star'
+        var sz = Math.random() < 0.15 ? 3 : Math.random() < 0.4 ? 2 : 1
+        var dur = 12 + Math.random() * 22
+        s.style.cssText = [
+          'width:' + sz + 'px',
+          'height:' + sz + 'px',
+          'left:' + (Math.random() * 100) + '%',
+          'bottom:' + (Math.random() * -20) + 'vh',
+          'background:' + cols[Math.floor(Math.random() * cols.length)],
+          'animation-duration:' + dur + 's',
+          'animation-delay:' + -(Math.random() * dur) + 's',
+          'opacity:0'
+        ].join(';')
+        sf.appendChild(s)
+      }
+    })()
+  </script>
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║ END OF TRANSMISSION 1104 — STATUS: OPEN                          ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║                                                                  ║
+  ║ SCULLY: "So the winner gets a mat."                              ║
+  ║ MULDER: "A hand-engraved leather mat, Scully."                   ║
+  ║ SCULLY: "And you want me to say I do not want it."               ║
+  ║ MULDER: "I want you to say you are registered."                  ║
+  ║ SCULLY: "I am registered."                                       ║
+  ║ MULDER: "Four Time Elementals?"                                  ║
+  ║ SCULLY: "I remain sceptical."                                    ║
+  ║ MULDER: "That is a yes."                                         ║
+  ║                                                                  ║
+  ║ — CSM / 1104                                                     ║
+  ║ "Trust no one. But register early. The truth is out there.       ║
+  ║ And so is the moose."                                            ║
+  ║                                                                  ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+</body>
+
+</html>
