@@ -2050,3 +2050,25 @@ html.tx-open #tx-lock {
 .sec-head-txt .redact {
   font-family: monospace;
 }
+
+/* ── Transmission figures ── */
+.tx-figure {
+  max-width: 720px;
+  margin: 0 auto 22px;
+  padding: 8px;
+  background: #040b16;
+  border: 2px solid;
+  border-color: var(--bevel-l) var(--bevel-d) var(--bevel-d) var(--bevel-l);
+}
+.tx-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.tx-figure figcaption {
+  margin-top: 8px;
+  font-family: var(--vt);
+  font-size: 18px;
+  color: var(--gold);
+  text-align: center;
+}
