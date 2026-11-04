@@ -11,7 +11,7 @@ window.TRANSMISSIONS = [
   },
   {
     id: '1104',
-    openAt: '2026-11-05T12:13:00+01:00', // 12:13 Stockholm (CET) = 11:13 UTC
+    openAt: '2026-11-04T09:25:00+01:00', // released manually
     marquee: 'TRANSMISSION 1104 — DOMINUS TEMPORIS PRIZE REVEALED'
   }
 ]
